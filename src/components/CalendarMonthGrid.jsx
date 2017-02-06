@@ -34,6 +34,7 @@ const propTypes = forbidExtraProps({
   renderDay: PropTypes.func,
   transformValue: PropTypes.string,
   focusedDate: momentPropTypes.momentObj,
+  calendarMonthWidth: PropTypes.number,
 
   // i18n
   monthFormat: PropTypes.string,
@@ -54,6 +55,7 @@ const defaultProps = {
   renderDay: null,
   transformValue: 'none',
   focusedDate: null,
+  calendarMonthWidth: 300,
 
   // i18n
   monthFormat: 'MMMM YYYY', // english locale
@@ -161,15 +163,17 @@ export default class CalendarMonthGrid extends React.Component {
 
     const { months } = this.state;
 
+    const isHorizontal = orientation === HORIZONTAL_ORIENTATION;
+
     const className = cx('CalendarMonthGrid', {
-      'CalendarMonthGrid--horizontal': orientation === HORIZONTAL_ORIENTATION,
+      'CalendarMonthGrid--horizontal': isHorizontal,
       'CalendarMonthGrid--vertical': orientation === VERTICAL_ORIENTATION,
       'CalendarMonthGrid--vertical-scrollable': orientation === VERTICAL_SCROLLABLE,
       'CalendarMonthGrid--animating': isAnimating,
     });
 
     const style = Object.assign({
-      width: (numberOfMonths + 1) * calendarMonthWidth,
+      width: isHorizontal ? (numberOfMonths + 1) * calendarMonthWidth : calendarMonthWidth,
     }, getTransformStyles(transformValue));
 
     return (

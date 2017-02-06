@@ -26,7 +26,6 @@ const propTypes = forbidExtraProps({
   onClearDates: PropTypes.func,
   onArrowDown: PropTypes.func,
 
-
   startDate: PropTypes.string,
   startDateValue: PropTypes.string,
   endDate: PropTypes.string,
@@ -42,8 +41,12 @@ const propTypes = forbidExtraProps({
   customInputIcon: PropTypes.node,
   customArrowIcon: PropTypes.node,
 
+  // accessibility
+  isFocused: PropTypes.bool,
+
   // i18n
   phrases: PropTypes.shape({
+    focusStartDate: PropTypes.node,
     clearDates: PropTypes.node,
   }),
 });
@@ -78,9 +81,13 @@ const defaultProps = {
   customInputIcon: null,
   customArrowIcon: null,
 
+  // accessibility
+  isFocused: false,
+
   // i18n
   phrases: {
-    clearDates: 'Clear Dates',
+    focusStartDate: 'Focus on start date',
+    clearDates: 'Clear dates',
   },
 };
 
@@ -137,6 +144,7 @@ export default class DateRangePickerInput extends React.Component {
       customInputIcon,
       customArrowIcon,
       phrases,
+      isFocused,
     } = this.props;
 
     const inputIcon = customInputIcon || (<CalendarIcon />);
@@ -149,12 +157,14 @@ export default class DateRangePickerInput extends React.Component {
         })}
       >
         {(showDefaultInputIcon || customInputIcon !== null) &&
-          <span
+          <button
+            type="button"
             className="DateRangePickerInput__calendar-icon"
+            aria-label={phrases.focusStartDate}
             onClick={onStartDateFocus}
           >
             {inputIcon}
-          </span>
+          </button>
         }
         <DateInput
           id={startDateId}
@@ -163,6 +173,7 @@ export default class DateRangePickerInput extends React.Component {
           inputValue={startDateValue}
           screenReaderMessage={screenReaderMessage}
           focused={isStartDateFocused}
+          isFocused={isFocused}
           disabled={disabled}
           required={required}
           showCaret={showCaret}
@@ -173,7 +184,11 @@ export default class DateRangePickerInput extends React.Component {
           onKeyDownArrowDown={onArrowDown}
         />
 
-        <div className="DateRangePickerInput__arrow">
+        <div
+          className="DateRangePickerInput__arrow"
+          aria-hidden="true"
+          role="presentation"
+        >
           {arrowIcon}
         </div>
 
@@ -184,6 +199,7 @@ export default class DateRangePickerInput extends React.Component {
           inputValue={endDateValue}
           screenReaderMessage={screenReaderMessage}
           focused={isEndDateFocused}
+          isFocused={isFocused}
           disabled={disabled}
           required={required}
           showCaret={showCaret}
@@ -197,6 +213,7 @@ export default class DateRangePickerInput extends React.Component {
         {showClearDates &&
           <button
             type="button"
+            aria-label={phrases.clearDates}
             className={cx('DateRangePickerInput__clear-dates', {
               'DateRangePickerInput__clear-dates--hide': !(startDate || endDate),
               'DateRangePickerInput__clear-dates--hover': isClearDatesHovered,
@@ -205,9 +222,6 @@ export default class DateRangePickerInput extends React.Component {
             onMouseLeave={this.onClearDatesMouseLeave}
             onClick={onClearDates}
           >
-            <span className="screen-reader-only">
-              {phrases.clearDates}
-            </span>
             <CloseButton />
           </button>
         }

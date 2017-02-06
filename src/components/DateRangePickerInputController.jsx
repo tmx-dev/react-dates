@@ -46,6 +46,9 @@ const propTypes = forbidExtraProps({
   customInputIcon: PropTypes.node,
   customArrowIcon: PropTypes.node,
 
+  // accessibility
+  isFocused: PropTypes.bool,
+
   // i18n
   phrases: PropTypes.shape({
     clearDates: PropTypes.node,
@@ -83,13 +86,16 @@ const defaultProps = {
   customInputIcon: null,
   customArrowIcon: null,
 
+  // accessibility
+  isFocused: false,
+
   // i18n
   phrases: {
     clearDates: 'Clear Dates',
   },
 };
 
-export default class DateRangePickerInputWithHandlers extends React.Component {
+export default class DateRangePickerInputController extends React.Component {
   constructor(props) {
     super(props);
 
@@ -210,6 +216,7 @@ export default class DateRangePickerInputWithHandlers extends React.Component {
       required,
       phrases,
       onArrowDown,
+      isFocused,
     } = this.props;
 
     const startDateString = this.getDateString(startDate);
@@ -246,10 +253,11 @@ export default class DateRangePickerInputWithHandlers extends React.Component {
         onClearDates={this.clearDates}
         screenReaderMessage={screenReaderMessage}
         onArrowDown={onArrowDown}
+        isFocused={isFocused}
       />
     );
   }
 }
 
-DateRangePickerInputWithHandlers.propTypes = propTypes;
-DateRangePickerInputWithHandlers.defaultProps = defaultProps;
+DateRangePickerInputController.propTypes = propTypes;
+DateRangePickerInputController.defaultProps = defaultProps;
