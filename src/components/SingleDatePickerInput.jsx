@@ -16,12 +16,14 @@ const propTypes = forbidExtraProps({
   required: PropTypes.bool,
   showCaret: PropTypes.bool,
   showClearDate: PropTypes.bool,
+  isFocused: PropTypes.bool,
 
   onChange: PropTypes.func,
   onClearDate: PropTypes.func,
   onFocus: PropTypes.func,
   onKeyDownShiftTab: PropTypes.func,
   onKeyDownTab: PropTypes.func,
+  onKeyDownArrowDown: PropTypes.func,
 
   // i18n
   phrases: PropTypes.shape({
@@ -39,12 +41,14 @@ const defaultProps = {
   required: false,
   showCaret: false,
   showClearDate: false,
+  isFocused: false,
 
   onChange() {},
   onClearDate() {},
   onFocus() {},
   onKeyDownShiftTab() {},
   onKeyDownTab() {},
+  onKeyDownArrowDown() {},
 
   // i18n
   phrases: {
@@ -86,6 +90,7 @@ export default class SingleDatePickerInput extends React.Component {
       disabled,
       required,
       showCaret,
+      isFocused,
       showClearDate,
       phrases,
       onClearDate,
@@ -93,6 +98,7 @@ export default class SingleDatePickerInput extends React.Component {
       onFocus,
       onKeyDownShiftTab,
       onKeyDownTab,
+      onKeyDownArrowDown,
       screenReaderMessage,
     } = this.props;
 
@@ -108,11 +114,13 @@ export default class SingleDatePickerInput extends React.Component {
           disabled={disabled}
           required={required}
           showCaret={showCaret}
+          isFocused={isFocused}
 
           onChange={onChange}
           onFocus={onFocus}
           onKeyDownShiftTab={onKeyDownShiftTab}
           onKeyDownTab={onKeyDownTab}
+          onKeyDownArrowDown={onKeyDownArrowDown}
         />
 
         {showClearDate &&
