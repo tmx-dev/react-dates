@@ -11,8 +11,8 @@ export default {
   endDate: momentPropTypes.momentObj,
   onDatesChange: PropTypes.func.isRequired,
 
-  focusedInput: FocusedInputShape,
-  onFocusChange: PropTypes.func.isRequired,
+  selectedInput: FocusedInputShape,
+  onSelectedInputChange: PropTypes.func.isRequired,
 
   // input related props
   startDateId: PropTypes.string.isRequired,
