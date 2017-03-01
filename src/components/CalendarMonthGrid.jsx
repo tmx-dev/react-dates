@@ -6,6 +6,9 @@ import moment from 'moment';
 import cx from 'classnames';
 import { addEventListener, removeEventListener } from 'consolidated-events';
 
+import { CalendarDayPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import CalendarMonth from './CalendarMonth';
 
 import isTransitionEndSupported from '../utils/isTransitionEndSupported';
@@ -38,6 +41,7 @@ const propTypes = forbidExtraProps({
 
   // i18n
   monthFormat: PropTypes.string,
+  phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
 });
 
 const defaultProps = {
@@ -59,6 +63,7 @@ const defaultProps = {
 
   // i18n
   monthFormat: 'MMMM YYYY', // english locale
+  phrases: CalendarDayPhrases,
 };
 
 function getMonths(initialMonth, numberOfMonths) {
@@ -158,6 +163,7 @@ export default class CalendarMonthGrid extends React.Component {
       onMonthTransitionEnd,
       focusedDate,
       calendarMonthWidth,
+      phrases,
     } = this.props;
 
 
@@ -200,6 +206,7 @@ export default class CalendarMonthGrid extends React.Component {
               onDayClick={onDayClick}
               renderDay={renderDay}
               focusedDate={isVisible ? focusedDate : null}
+              phrases={phrases}
             />
           );
         })}

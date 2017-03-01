@@ -5,6 +5,11 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import cx from 'classnames';
 
+import { CalendarDayPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
+import { BLOCKED_MODIFIER } from '../../constants';
+
 const propTypes = forbidExtraProps({
   day: momentPropTypes.momentObj,
   isOutsideDay: PropTypes.bool,
@@ -14,6 +19,9 @@ const propTypes = forbidExtraProps({
   onDayMouseEnter: PropTypes.func,
   onDayMouseLeave: PropTypes.func,
   renderDay: PropTypes.func,
+
+  // internationalization
+  phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
 });
 
 const defaultProps = {
@@ -25,6 +33,9 @@ const defaultProps = {
   onDayMouseEnter() {},
   onDayMouseLeave() {},
   renderDay: null,
+
+  // internationalization
+  phrases: CalendarDayPhrases,
 };
 
 export function getModifiersForDay(modifiers, day) {
@@ -65,19 +76,32 @@ export default class CalendarDay extends React.Component {
       modifiers,
       renderDay,
       isFocused,
+      phrases: { unavailable, available },
     } = this.props;
 
-    const className = cx('CalendarDay', {
-      'CalendarDay--outside': !day || isOutsideDay,
-    }, getModifiersForDay(modifiers, day).map(mod => `CalendarDay--${mod}`));
+    if (!day) return <td />;
 
-    return (day ?
+    const modifiersForDay = getModifiersForDay(modifiers, day);
+
+    const className = cx('CalendarDay', {
+      'CalendarDay--outside': isOutsideDay,
+    }, modifiersForDay.map(mod => `CalendarDay--${mod}`));
+
+
+    let availabilityText = '';
+    if (BLOCKED_MODIFIER in modifiers) {
+      availabilityText = modifiers[BLOCKED_MODIFIER](day) ? unavailable : available;
+    }
+
+    const ariaLabel = `${availabilityText} ${day.format('dddd')}. ${day.format('LL')}`;
+
+    return (
       <td className={className}>
         <button
           type="button"
           ref={(ref) => { this.buttonRef = ref; }}
           className="CalendarDay__button"
-          aria-label={`${day.format('dddd')}. ${day.format('LL')}`}
+          aria-label={ariaLabel}
           onMouseEnter={e => this.onDayMouseEnter(day, e)}
           onMouseLeave={e => this.onDayMouseLeave(day, e)}
           onMouseUp={e => e.currentTarget.blur()}
@@ -87,8 +111,6 @@ export default class CalendarDay extends React.Component {
           {renderDay ? renderDay(day) : day.format('D')}
         </button>
       </td>
-      :
-      <td />
     );
   }
 }

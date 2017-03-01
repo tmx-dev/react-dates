@@ -675,6 +675,7 @@ export default class DayPicker extends React.Component {
                 onMonthTransitionEnd={this.updateStateAfterMonthTransition}
                 monthFormat={monthFormat}
                 focusedDate={shouldFocusDate ? focusedDate : null}
+                phrases={phrases}
               />
 
               {verticalScrollable && this.renderNavigation()}

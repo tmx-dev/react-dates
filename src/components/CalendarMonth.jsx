@@ -7,6 +7,9 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import cx from 'classnames';
 
+import { CalendarDayPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import CalendarDay from './CalendarDay';
 
 import getCalendarMonthWeeks from '../utils/getCalendarMonthWeeks';
@@ -35,6 +38,7 @@ const propTypes = forbidExtraProps({
 
   // i18n
   monthFormat: PropTypes.string,
+  phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
 });
 
 const defaultProps = {
@@ -52,6 +56,7 @@ const defaultProps = {
 
   // i18n
   monthFormat: 'MMMM YYYY', // english locale
+  phrases: CalendarDayPhrases,
 };
 
 export default class CalendarMonth extends React.Component {
@@ -87,6 +92,7 @@ export default class CalendarMonth extends React.Component {
       onDayMouseLeave,
       renderDay,
       focusedDate,
+      phrases,
     } = this.props;
 
     const { weeks } = this.state;
@@ -119,6 +125,7 @@ export default class CalendarMonth extends React.Component {
                     onDayMouseLeave={onDayMouseLeave}
                     onDayClick={onDayClick}
                     renderDay={renderDay}
+                    phrases={phrases}
                   />
                 ))}
               </tr>

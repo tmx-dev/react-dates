@@ -23,6 +23,8 @@ const moveFocustoStartAndEndOfWeek = 'Navigate to the beginning or end of the cu
 const returnFocusToInput = 'Return focus to the input field';
 const keyboardNavigationInstructions = `Press the down arrow to select a date using the calendar
   interface. Press ? to explore a list of all possible keyboard shortcuts.`;
+const available = 'Available.';
+const unavailable = 'Unavailable.';
 
 export default {
   closeDatePicker,
@@ -49,6 +51,8 @@ export default {
   moveFocustoStartAndEndOfWeek,
   returnFocusToInput,
   keyboardNavigationInstructions,
+  available,
+  unavailable,
 };
 
 export const DateRangePickerPhrases = {
@@ -75,6 +79,8 @@ export const DateRangePickerPhrases = {
   moveFocustoStartAndEndOfWeek,
   returnFocusToInput,
   keyboardNavigationInstructions,
+  available,
+  unavailable,
 };
 
 export const DateRangePickerInputPhrases = {
@@ -106,6 +112,8 @@ export const SingleDatePickerPhrases = {
   moveFocustoStartAndEndOfWeek,
   returnFocusToInput,
   keyboardNavigationInstructions,
+  available,
+  unavailable,
 };
 
 export const SingleDatePickerInputPhrases = {
@@ -133,6 +141,8 @@ export const DayPickerPhrases = {
   moveFocusByOneMonth,
   moveFocustoStartAndEndOfWeek,
   returnFocusToInput,
+  available,
+  unavailable,
 };
 
 export const DayPickerKeyboardShortcutsPhrases = {
@@ -158,4 +168,9 @@ export const DayPickerKeyboardShortcutsPhrases = {
 export const DayPickerNavigationPhrases = {
   jumpToPrevMonth,
   jumpToNextMonth,
+};
+
+export const CalendarDayPhrases = {
+  available,
+  unavailable,
 };
