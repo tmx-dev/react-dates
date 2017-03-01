@@ -2,6 +2,9 @@ import React, { PropTypes } from 'react';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import cx from 'classnames';
 
+import { DayPickerNavigationPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import LeftArrow from '../svg/arrow-left.svg';
 import RightArrow from '../svg/arrow-right.svg';
 import ChevronUp from '../svg/chevron-up.svg';
@@ -22,10 +25,7 @@ const propTypes = forbidExtraProps({
   onNextMonthClick: PropTypes.func,
 
   // internationalization
-  phrases: PropTypes.shape({
-    jumpToPrevMonth: PropTypes.node,
-    jumpToNextMonth: PropTypes.node,
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(DayPickerNavigationPhrases)),
 });
 
 const defaultProps = {
@@ -37,10 +37,7 @@ const defaultProps = {
   onNextMonthClick() {},
 
   // internationalization
-  phrases: {
-    jumpToPrevMonth: 'Jump to previous month',
-    jumpToNextMonth: 'Jump to next month',
-  },
+  phrases: DayPickerNavigationPhrases,
 };
 
 export default function DayPickerNavigation(props) {

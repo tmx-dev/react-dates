@@ -2,6 +2,9 @@ import React, { PropTypes } from 'react';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import cx from 'classnames';
 
+import { DateRangePickerInputPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import DateInput from './DateInput';
 import RightArrow from '../svg/arrow-right.svg';
 import CloseButton from '../svg/close.svg';
@@ -47,10 +50,7 @@ const propTypes = forbidExtraProps({
   isFocused: PropTypes.bool, // handles actual DOM focus
 
   // i18n
-  phrases: PropTypes.shape({
-    focusStartDate: PropTypes.node,
-    clearDates: PropTypes.node,
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(DateRangePickerInputPhrases)),
 });
 
 const defaultProps = {
@@ -88,10 +88,7 @@ const defaultProps = {
   isFocused: false,  // handles actual DOM focus
 
   // i18n
-  phrases: {
-    focusStartDate: 'Focus on start date',
-    clearDates: 'Clear dates',
-  },
+  phrases: DateRangePickerInputPhrases,
 };
 
 export default class DateRangePickerInput extends React.Component {
@@ -154,6 +151,8 @@ export default class DateRangePickerInput extends React.Component {
     const inputIcon = customInputIcon || (<CalendarIcon />);
     const arrowIcon = customArrowIcon || (<RightArrow />);
 
+    const screenReaderText = screenReaderMessage || phrases.keyboardNavigationInstructions;
+
     return (
       <div
         className={cx('DateRangePickerInput', {
@@ -176,7 +175,7 @@ export default class DateRangePickerInput extends React.Component {
           placeholder={startDatePlaceholderText}
           displayValue={startDate}
           inputValue={startDateValue}
-          screenReaderMessage={screenReaderMessage}
+          screenReaderMessage={screenReaderText}
           focused={isFocused}
           selected={isStartDateSelected}
           disabled={disabled}
@@ -203,7 +202,7 @@ export default class DateRangePickerInput extends React.Component {
           placeholder={endDatePlaceholderText}
           displayValue={endDate}
           inputValue={endDateValue}
-          screenReaderMessage={screenReaderMessage}
+          screenReaderMessage={screenReaderText}
           focused={isFocused}
           selected={isEndDateSelected}
           disabled={disabled}

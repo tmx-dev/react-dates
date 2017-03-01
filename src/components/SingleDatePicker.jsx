@@ -20,6 +20,7 @@ import isInclusivelyAfterDay from '../utils/isInclusivelyAfterDay';
 import isSameDay from '../utils/isSameDay';
 
 import SingleDatePickerShape from '../shapes/SingleDatePickerShape';
+import { SingleDatePickerPhrases } from '../defaultPhrases';
 
 import {
   HORIZONTAL_ORIENTATION,
@@ -70,30 +71,7 @@ const defaultProps = {
   // internationalization props
   displayFormat: () => moment.localeData().longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
-  phrases: {
-    closeDatePicker: 'Close',
-    clearDate: 'Clear Date',
-    jumpToPrevMonth: 'Jump to previous month',
-    jumpToNextMonth: 'Jump to next month',
-    keyboardShortcuts: {
-      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
-      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
-      enterKey: 'Enter key',
-      leftArrowRightArrow: 'Left Arrow/Right Arrow',
-      upArrowDownArrow: 'Up Arrow/Down Arrow',
-      pageUpPageDown: 'Page Up/Page Down',
-      homeEnd: 'Home/End',
-      escape: 'Escape',
-      shiftAndForwardSlash: 'Shift key + forward slash',
-      selectFocusedDate: 'Select the currently focused date',
-      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
-      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
-      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
-      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
-      returnFocusToInput: 'Return focus to the input field',
-      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
-    },
-  },
+  phrases: SingleDatePickerPhrases,
 };
 
 export default class SingleDatePicker extends React.Component {
@@ -372,7 +350,7 @@ export default class SingleDatePicker extends React.Component {
       renderDay,
       date,
       initialVisibleMonth,
-      phrases: { closeDatePicker, jumpToPrevMonth, jumpToNextMonth, keyboardShortcuts },
+      phrases,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused } = this.state;
 
@@ -417,12 +395,12 @@ export default class SingleDatePicker extends React.Component {
           isFocused={isDayPickerFocused}
           getFirstFocusableDay={this.getFirstFocusableDay}
           onBlur={this.onDayPickerBlur}
-          phrases={{ jumpToPrevMonth, jumpToNextMonth, keyboardShortcuts }}
+          phrases={phrases}
         />
 
         {withFullScreenPortal &&
           <button
-            aria-label={closeDatePicker}
+            aria-label={phrases.closeDatePicker}
             className="SingleDatePicker__close"
             type="button"
             onClick={this.onClearFocus}
@@ -443,7 +421,7 @@ export default class SingleDatePicker extends React.Component {
       required,
       showClearDate,
       date,
-      phrases: { clearDate },
+      phrases,
       withPortal,
       withFullScreenPortal,
       screenReaderInputMessage,
@@ -467,7 +445,7 @@ export default class SingleDatePicker extends React.Component {
             required={required}
             showCaret={!withPortal && !withFullScreenPortal}
             focused={isInputFocused}
-            phrases={{ clearDate }}
+            phrases={phrases}
             onClearDate={this.clearDate}
             showClearDate={showClearDate}
             displayValue={displayValue}

@@ -5,6 +5,9 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import cx from 'classnames';
 
+import { DayPickerPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import OutsideClickHandler from './OutsideClickHandler';
 import CalendarMonthGrid from './CalendarMonthGrid';
 import DayPickerNavigation from './DayPickerNavigation';
@@ -57,28 +60,7 @@ const propTypes = forbidExtraProps({
 
   // internationalization
   monthFormat: PropTypes.string,
-  phrases: PropTypes.shape({
-    jumpToPrevMonth: PropTypes.node,
-    jumpToNextMonth: PropTypes.node,
-    keyboardShortcuts: PropTypes.shape({
-      showKeyboardShortcutsPanel: PropTypes.node,
-      hideKeyboardShortcutsPanel: PropTypes.node,
-      enterKey: PropTypes.node,
-      leftArrowRightArrow: PropTypes.node,
-      upArrowDownArrow: PropTypes.node,
-      pageUpPageDown: PropTypes.node,
-      homeEnd: PropTypes.node,
-      escape: PropTypes.node,
-      questionMark: PropTypes.node,
-      selectFocusedDate: PropTypes.node,
-      moveFocusByOneDay: PropTypes.node,
-      moveFocusByOneWeek: PropTypes.node,
-      moveFocusByOneMonth: PropTypes.node,
-      moveFocustoStartAndEndOfWeek: PropTypes.node,
-      returnFocusToInput: PropTypes.node,
-      showKeyboardShortcuts: PropTypes.node,
-    }),
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
 });
 
 const defaultProps = {
@@ -112,28 +94,7 @@ const defaultProps = {
 
   // internationalization
   monthFormat: 'MMMM YYYY',
-  phrases: {
-    jumpToPrevMonth: 'Jump to previous month',
-    jumpToNextMonth: 'Jump to next month',
-    keyboardShortcuts: {
-      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
-      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
-      enterKey: 'Enter key',
-      leftArrowRightArrow: 'Left Arrow/Right Arrow',
-      upArrowDownArrow: 'Up Arrow/Down Arrow',
-      pageUpPageDown: 'Page Up/Page Down',
-      homeEnd: 'Home/End',
-      escape: 'Escape',
-      shiftAndForwardSlash: 'Shift key + forward slash',
-      selectFocusedDate: 'Select the currently focused date',
-      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
-      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
-      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
-      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
-      returnFocusToInput: 'Return focus to the input field',
-      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
-    },
-  },
+  phrases: DayPickerPhrases,
 };
 
 function applyTransformStyles(el, transform, opacity = '') {
@@ -612,6 +573,7 @@ export default class DayPicker extends React.Component {
       renderDay,
       onOutsideClick,
       monthFormat,
+      phrases,
     } = this.props;
 
     const numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
@@ -716,6 +678,7 @@ export default class DayPicker extends React.Component {
             <DayPickerKeyboardShortcuts
               showKeyboardShortcutsPanel={showKeyboardShortcuts}
               toggleKeyboardShortcutsPanel={this.toggleKeyboardShortcuts}
+              phrases={phrases}
             />
           </div>
         </OutsideClickHandler>

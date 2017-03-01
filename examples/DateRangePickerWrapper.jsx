@@ -5,6 +5,7 @@ import omit from 'lodash.omit';
 
 import DateRangePicker from '../src/components/DateRangePicker';
 
+import { DateRangePickerPhrases } from '../src/defaultPhrases';
 import DateRangePickerShape from '../src/shapes/DateRangePickerShape';
 import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION, ANCHOR_LEFT } from '../constants';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
@@ -73,30 +74,7 @@ const defaultProps = {
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
-  phrases: {
-    closeDatePicker: 'Close',
-    clearDates: 'Clear Dates',
-    jumpToPrevMonth: 'Jump to previous month',
-    jumpToNextMonth: 'Jump to next month',
-    keyboardShortcuts: {
-      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
-      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
-      enterKey: 'Enter key',
-      leftArrowRightArrow: 'Left Arrow/Right Arrow',
-      upArrowDownArrow: 'Up Arrow/Down Arrow',
-      pageUpPageDown: 'Page Up/Page Down',
-      homeEnd: 'Home/End',
-      escape: 'Escape',
-      shiftAndForwardSlash: 'Shift key + forward slash',
-      selectFocusedDate: 'Select the currently focused date',
-      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
-      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
-      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
-      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
-      returnFocusToInput: 'Return focus to the input field',
-      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
-    },
-  },
+  phrases: DateRangePickerPhrases,
 };
 
 class DateRangePickerWrapper extends React.Component {

@@ -3,6 +3,9 @@ import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 
+import { DayPickerPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import isTouchDevice from '../utils/isTouchDevice';
 
 import isInclusivelyAfterDay from '../utils/isInclusivelyAfterDay';
@@ -56,28 +59,7 @@ const propTypes = forbidExtraProps({
 
   // i18n
   monthFormat: PropTypes.string,
-  phrases: PropTypes.shape({
-    jumpToPrevMonth: PropTypes.node,
-    jumpToNextMonth: PropTypes.node,
-    keyboardShortcuts: PropTypes.shape({
-      showKeyboardShortcutsPanel: PropTypes.node,
-      hideKeyboardShortcutsPanel: PropTypes.node,
-      enterKey: PropTypes.node,
-      leftArrowRightArrow: PropTypes.node,
-      upArrowDownArrow: PropTypes.node,
-      pageUpPageDown: PropTypes.node,
-      homeEnd: PropTypes.node,
-      escape: PropTypes.node,
-      questionMark: PropTypes.node,
-      selectFocusedDate: PropTypes.node,
-      moveFocusByOneDay: PropTypes.node,
-      moveFocusByOneWeek: PropTypes.node,
-      moveFocusByOneMonth: PropTypes.node,
-      moveFocustoStartAndEndOfWeek: PropTypes.node,
-      returnFocusToInput: PropTypes.node,
-      showKeyboardShortcuts: PropTypes.node,
-    }),
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
 });
 
 const defaultProps = {
@@ -118,28 +100,7 @@ const defaultProps = {
 
   // i18n
   monthFormat: 'MMMM YYYY',
-  phrases: {
-    jumpToPrevMonth: 'Jump to previous month',
-    jumpToNextMonth: 'Jump to next month',
-    keyboardShortcuts: {
-      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
-      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
-      enterKey: 'Enter key',
-      leftArrowRightArrow: 'Left Arrow/Right Arrow',
-      upArrowDownArrow: 'Up Arrow/Down Arrow',
-      pageUpPageDown: 'Page Up/Page Down',
-      homeEnd: 'Home/End',
-      escape: 'Escape',
-      shiftAndForwardSlash: 'Shift key + forward slash',
-      selectFocusedDate: 'Select the currently focused date',
-      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
-      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
-      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
-      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
-      returnFocusToInput: 'Return focus to the input field',
-      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
-    },
-  },
+  phrases: DayPickerPhrases,
 };
 
 export default class DayPickerRangeController extends React.Component {

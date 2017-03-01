@@ -163,8 +163,6 @@ export default class DateInput extends React.Component {
         />
 
         <p id={screenReaderMessageId} className="screen-reader-only">
-          Press the down arrow to select a date using the calendar interface. <br />
-          Press the shift key and forward slash together to see a list of all keyboard shortcuts. <br />
           {screenReaderMessage}
         </p>
 

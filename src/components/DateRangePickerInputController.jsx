@@ -4,6 +4,9 @@ import moment from 'moment';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps } from 'airbnb-prop-types';
 
+import { DateRangePickerInputPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import DateRangePickerInput from './DateRangePickerInput';
 
 import toMomentObject from '../utils/toMomentObject';
@@ -51,10 +54,7 @@ const propTypes = forbidExtraProps({
   isFocused: PropTypes.bool, // handles actual DOM focus
 
   // i18n
-  phrases: PropTypes.shape({
-    focusStartDate: PropTypes.node,
-    clearDates: PropTypes.node,
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(DateRangePickerInputPhrases)),
 });
 
 const defaultProps = {
@@ -93,10 +93,7 @@ const defaultProps = {
   isFocused: false,
 
   // i18n
-  phrases: {
-    focusStartDate: 'Focus on start date',
-    clearDates: 'Clear Dates',
-  },
+  phrases: DateRangePickerInputPhrases,
 };
 
 export default class DateRangePickerInputController extends React.Component {

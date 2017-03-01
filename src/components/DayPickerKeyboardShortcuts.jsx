@@ -1,52 +1,21 @@
 import React, { PropTypes } from 'react';
 import { forbidExtraProps } from 'airbnb-prop-types';
 
+import { DayPickerKeyboardShortcutsPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import CloseButton from '../svg/close.svg';
 
 const propTypes = forbidExtraProps({
   showKeyboardShortcutsPanel: PropTypes.bool,
   toggleKeyboardShortcutsPanel: PropTypes.func,
-  phrases: PropTypes.shape({
-    showKeyboardShortcutsPanel: PropTypes.node,
-    hideKeyboardShortcutsPanel: PropTypes.node,
-    enterKey: PropTypes.node,
-    leftArrowRightArrow: PropTypes.node,
-    upArrowDownArrow: PropTypes.node,
-    pageUpPageDown: PropTypes.node,
-    homeEnd: PropTypes.node,
-    escape: PropTypes.node,
-    questionMark: PropTypes.node,
-    selectFocusedDate: PropTypes.node,
-    moveFocusByOneDay: PropTypes.node,
-    moveFocusByOneWeek: PropTypes.node,
-    moveFocusByOneMonth: PropTypes.node,
-    moveFocustoStartAndEndOfWeek: PropTypes.node,
-    returnFocusToInput: PropTypes.node,
-    toggleKeyboardShortcuts: PropTypes.node,
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(DayPickerKeyboardShortcutsPhrases)),
 });
 
 const defaultProps = {
   showKeyboardShortcutsPanel: false,
   toggleKeyboardShortcutsPanel() {},
-  phrases: {
-    showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
-    hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
-    enterKey: 'Enter key',
-    leftArrowRightArrow: 'Left Arrow/Right Arrow',
-    upArrowDownArrow: 'Up Arrow/Down Arrow',
-    pageUpPageDown: 'Page Up/Page Down',
-    homeEnd: 'Home/End',
-    escape: 'Escape',
-    questionMark: 'Question mark',
-    selectFocusedDate: 'Select the currently focused date',
-    moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
-    moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
-    moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
-    moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
-    returnFocusToInput: 'Return focus to the input field',
-    toggleKeyboardShortcuts: 'Toggle the keyboard shortcuts panel',
-  },
+  phrases: DayPickerKeyboardShortcutsPhrases,
 };
 
 function KeyboardShortcutRow({ unicode, label, action }) {
@@ -111,7 +80,7 @@ export default function DayPickerKeyboardShortcuts({
   {
     unicode: '?',
     label: phrases.questionMark,
-    action: phrases.toggleKeyboardShortcuts,
+    action: phrases.toggleKeyboardShortcutsPanel,
   },
   ];
 
@@ -139,7 +108,7 @@ export default function DayPickerKeyboardShortcuts({
         <div
           className="DayPickerKeyboardShortcuts__panel"
         >
-          <h1 className="DayPickerKeyboardShortcuts__title">Keyboard Shortcuts</h1>
+          <h1 className="DayPickerKeyboardShortcuts__title">{phrases.keyboardShortcuts}</h1>
 
           <ul className="DayPickerKeyboardShortcuts__list">
             {keyboardShortcuts.map(({ unicode, label, action }) => (

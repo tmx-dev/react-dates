@@ -2,6 +2,9 @@ import React, { PropTypes } from 'react';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import cx from 'classnames';
 
+import { SingleDatePickerInputPhrases } from '../defaultPhrases';
+import getPhrasePropTypes from '../utils/getPhrasePropTypes';
+
 import DateInput from './DateInput';
 import CloseButton from '../svg/close.svg';
 
@@ -26,9 +29,7 @@ const propTypes = forbidExtraProps({
   onKeyDownArrowDown: PropTypes.func,
 
   // i18n
-  phrases: PropTypes.shape({
-    clearDate: PropTypes.node,
-  }),
+  phrases: PropTypes.shape(getPhrasePropTypes(SingleDatePickerInputPhrases)),
 });
 
 const defaultProps = {
@@ -51,9 +52,7 @@ const defaultProps = {
   onKeyDownArrowDown() {},
 
   // i18n
-  phrases: {
-    clearDate: 'Clear Date',
-  },
+  phrases: SingleDatePickerInputPhrases,
 };
 
 export default class SingleDatePickerInput extends React.Component {
@@ -102,6 +101,8 @@ export default class SingleDatePickerInput extends React.Component {
       screenReaderMessage,
     } = this.props;
 
+    const screenReaderText = screenReaderMessage || phrases.keyboardNavigationInstructions;
+
     return (
       <div className="SingleDatePickerInput">
         <DateInput
@@ -109,7 +110,7 @@ export default class SingleDatePickerInput extends React.Component {
           placeholder={placeholder} // also used as label
           displayValue={displayValue}
           inputValue={inputValue}
-          screenReaderMessage={screenReaderMessage}
+          screenReaderMessage={screenReaderText}
           selected={selected}
           disabled={disabled}
           required={required}

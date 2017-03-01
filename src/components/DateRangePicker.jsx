@@ -7,6 +7,8 @@ import Portal from 'react-portal';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { addEventListener, removeEventListener } from 'consolidated-events';
 
+import { DateRangePickerPhrases } from '../defaultPhrases';
+
 import OutsideClickHandler from './OutsideClickHandler';
 import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
 
@@ -77,30 +79,7 @@ const defaultProps = {
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
-  phrases: {
-    closeDatePicker: 'Close',
-    clearDates: 'Clear Dates',
-    jumpToPrevMonth: 'Jump to previous month',
-    jumpToNextMonth: 'Jump to next month',
-    keyboardShortcuts: {
-      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
-      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
-      enterKey: 'Enter key',
-      leftArrowRightArrow: 'Left Arrow/Right Arrow',
-      upArrowDownArrow: 'Up Arrow/Down Arrow',
-      pageUpPageDown: 'Page Up/Page Down',
-      homeEnd: 'Home/End',
-      escape: 'Escape',
-      shiftAndForwardSlash: 'Shift key + forward slash',
-      selectFocusedDate: 'Select the currently focused date',
-      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
-      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
-      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
-      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
-      returnFocusToInput: 'Return focus to the input field',
-      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
-    },
-  },
+  phrases: DateRangePickerPhrases,
 };
 
 export default class DateRangePicker extends React.Component {
@@ -300,7 +279,7 @@ export default class DateRangePicker extends React.Component {
       keepOpenOnDateSelect,
       renderDay,
       initialVisibleMonth,
-      phrases: { jumpToPrevMonth, jumpToNextMonth, keyboardShortcuts, closeDatePicker },
+      phrases,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
@@ -343,11 +322,7 @@ export default class DateRangePicker extends React.Component {
           isFocused={isDayPickerFocused}
           showKeyboardShortcuts={showKeyboardShortcuts}
           onBlur={this.onDayPickerBlur}
-          phrases={{
-            jumpToPrevMonth,
-            jumpToNextMonth,
-            keyboardShortcuts,
-          }}
+          phrases={phrases}
         />
 
         {withFullScreenPortal &&
@@ -355,7 +330,7 @@ export default class DateRangePicker extends React.Component {
             className="DateRangePicker__close"
             type="button"
             onClick={this.onOutsideClick}
-            aria-label={closeDatePicker}
+            aria-label={phrases.closeDatePicker}
           >
             <CloseButton />
           </button>
@@ -380,7 +355,7 @@ export default class DateRangePicker extends React.Component {
       customArrowIcon,
       disabled,
       required,
-      phrases: { focusStartDate, clearDates },
+      phrases,
       isOutsideRange,
       withPortal,
       withFullScreenPortal,
@@ -422,7 +397,7 @@ export default class DateRangePicker extends React.Component {
             onSelectedInputChange={this.onDateRangePickerInputFocus}
             onArrowDown={this.onDayPickerFocus}
             onQuestionMark={this.showKeyboardShortcutsPanel}
-            phrases={{ focusStartDate, clearDates }}
+            phrases={phrases}
             screenReaderMessage={screenReaderInputMessage}
             isFocused={isDateRangePickerInputFocused}
           />
