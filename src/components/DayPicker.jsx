@@ -53,6 +53,7 @@ const propTypes = forbidExtraProps({
   isFocused: PropTypes.bool,
   getFirstFocusableDay: PropTypes.func,
   onBlur: PropTypes.func,
+  showKeyboardShortcuts: PropTypes.bool,
 
   // internationalization
   monthFormat: PropTypes.string,
@@ -107,6 +108,7 @@ const defaultProps = {
   isFocused: false,
   getFirstFocusableDay: null,
   onBlur() {},
+  showKeyboardShortcuts: false,
 
   // internationalization
   monthFormat: 'MMMM YYYY',
@@ -202,7 +204,7 @@ export default class DayPicker extends React.Component {
       scrollableMonthMultiple: 1,
       focusedDate: null,
       nextFocusedDate: null,
-      showKeyboardShortcuts: false,
+      showKeyboardShortcuts: props.showKeyboardShortcuts,
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -218,12 +220,10 @@ export default class DayPicker extends React.Component {
       this.adjustDayPickerHeight();
       this.initializeDayPickerWidth();
     }
-
-    this.container.addEventListener('keydown', this.onKeyDown);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { hidden, isFocused } = nextProps;
+    const { hidden, isFocused, showKeyboardShortcuts } = nextProps;
     const { currentMonth } = this.state;
 
     if (!hidden) {
@@ -243,7 +243,10 @@ export default class DayPicker extends React.Component {
     if (isFocused !== this.props.isFocused) {
       if (isFocused) {
         const focusedDate = this.getFocusedDay(currentMonth);
-        this.setState({ focusedDate });
+        this.setState({
+          showKeyboardShortcuts,
+          focusedDate,
+        });
       } else {
         this.setState({ focusedDate: null });
       }
@@ -261,61 +264,66 @@ export default class DayPicker extends React.Component {
         this.adjustDayPickerHeight();
       }
     }
-  }
 
-  componentWillUnmount() {
-    this.container.removeEventListener('keydown', this.onKeyDown);
+    if (!prevProps.showKeyboardShortcuts && this.props.showKeyboardShortcuts) {
+      // not sure what the right approach is here
+      this.container.focus();
+    }
   }
 
   onKeyDown(e) {
     const { onBlur } = this.props;
     const { focusedDate } = this.state;
+
+    if (!focusedDate) return;
+
     const newFocusedDate = focusedDate.clone();
 
     let didTransitionMonth = false;
 
-    const key = e.which || e.charCode || e.keyCode;
-
-    switch (key) {
-      case 38: // Up Arrow
+    switch (e.key) {
+      case 'ArrowUp':
         newFocusedDate.subtract(1, 'week');
         didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
         break;
-      case 37: // Left Arrow
+      case 'ArrowLeft':
         newFocusedDate.subtract(1, 'day');
         didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
         break;
-      case 36: // Home
+      case 'Home':
         newFocusedDate.startOf('week');
         didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
         break;
-      case 33: // PageUp
+      case 'PageUp':
         newFocusedDate.subtract(1, 'month');
         didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
         break;
 
-      case 40: // Down Arrow
+      case 'ArrowDown':
         newFocusedDate.add(1, 'week');
         didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
         break;
-      case 39: // Right Arrow
+      case 'ArrowRight':
         newFocusedDate.add(1, 'day');
         didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
         break;
-      case 35: // End
+      case 'End':
         newFocusedDate.endOf('week');
         didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
         break;
-      case 34: // Page Down
+      case 'PageDown':
         newFocusedDate.add(1, 'month');
         didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
         break;
 
-      case 191:
-        if (e.shiftKey) this.toggleKeyboardShortcuts();
+      case '?':
+        this.toggleKeyboardShortcuts();
         break;
 
-      case 27: // Escape
+      case 'Escape':
+        this.setState({
+          showKeyboardShortcuts: false,
+        });
         onBlur();
         return;
       default:
@@ -671,7 +679,9 @@ export default class DayPicker extends React.Component {
 
           <div
             ref={(ref) => { this.container = ref; }}
+            onKeyDown={this.onKeyDown}
             role="region"
+            tabIndex={0}
           >
             {!verticalScrollable && this.renderNavigation()}
 

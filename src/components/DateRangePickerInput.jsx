@@ -26,6 +26,7 @@ const propTypes = forbidExtraProps({
   onEndDateTab: PropTypes.func,
   onClearDates: PropTypes.func,
   onArrowDown: PropTypes.func,
+  onQuestionMark: PropTypes.func,
 
   startDate: PropTypes.string,
   startDateValue: PropTypes.string,
@@ -66,6 +67,7 @@ const defaultProps = {
   onEndDateTab() {},
   onClearDates() {},
   onArrowDown() {},
+  onQuestionMark() {},
 
   startDate: '',
   startDateValue: '',
@@ -127,7 +129,6 @@ export default class DateRangePickerInput extends React.Component {
       onStartDateChange,
       onStartDateFocus,
       onStartDateShiftTab,
-      onArrowDown,
       endDate,
       endDateValue,
       endDateId,
@@ -136,6 +137,8 @@ export default class DateRangePickerInput extends React.Component {
       onEndDateChange,
       onEndDateFocus,
       onEndDateTab,
+      onArrowDown,
+      onQuestionMark,
       onClearDates,
       showClearDates,
       disabled,
@@ -184,6 +187,7 @@ export default class DateRangePickerInput extends React.Component {
           onFocus={onStartDateFocus}
           onKeyDownShiftTab={onStartDateShiftTab}
           onKeyDownArrowDown={onArrowDown}
+          onKeyDownQuestionMark={onQuestionMark}
         />
 
         <div
@@ -210,6 +214,7 @@ export default class DateRangePickerInput extends React.Component {
           onFocus={onEndDateFocus}
           onKeyDownTab={onEndDateTab}
           onKeyDownArrowDown={onArrowDown}
+          onKeyDownQuestionMark={onQuestionMark}
         />
 
         {showClearDates &&

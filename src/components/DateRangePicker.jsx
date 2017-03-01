@@ -110,12 +110,14 @@ export default class DateRangePicker extends React.Component {
       dayPickerContainerStyles: {},
       isDateRangePickerInputFocused: false,
       isDayPickerFocused: false,
+      showKeyboardShortcuts: false,
     };
 
     this.onOutsideClick = this.onOutsideClick.bind(this);
     this.onDateRangePickerInputFocus = this.onDateRangePickerInputFocus.bind(this);
     this.onDayPickerFocus = this.onDayPickerFocus.bind(this);
     this.onDayPickerBlur = this.onDayPickerBlur.bind(this);
+    this.showKeyboardShortcutsPanel = this.showKeyboardShortcutsPanel.bind(this);
 
     this.responsivizePickerPosition = this.responsivizePickerPosition.bind(this);
   }
@@ -158,6 +160,7 @@ export default class DateRangePicker extends React.Component {
     this.setState({
       isDateRangePickerInputFocused: false,
       isDayPickerFocused: false,
+      showKeyboardShortcuts: false,
     });
 
     onSelectedInputChange(null);
@@ -170,6 +173,7 @@ export default class DateRangePicker extends React.Component {
       this.setState({
         isDateRangePickerInputFocused: true,
         isDayPickerFocused: false,
+        showKeyboardShortcuts: false,
       });
     }
 
@@ -180,6 +184,7 @@ export default class DateRangePicker extends React.Component {
     this.setState({
       isDateRangePickerInputFocused: false,
       isDayPickerFocused: true,
+      showKeyboardShortcuts: false,
     });
   }
 
@@ -187,6 +192,7 @@ export default class DateRangePicker extends React.Component {
     this.setState({
       isDateRangePickerInputFocused: true,
       isDayPickerFocused: false,
+      showKeyboardShortcuts: false,
     });
   }
 
@@ -244,6 +250,14 @@ export default class DateRangePicker extends React.Component {
     }
   }
 
+  showKeyboardShortcutsPanel() {
+    this.setState({
+      isDateRangePickerInputFocused: false,
+      isDayPickerFocused: true,
+      showKeyboardShortcuts: true,
+    });
+  }
+
   maybeRenderDayPickerWithPortal() {
     const { withPortal, withFullScreenPortal } = this.props;
 
@@ -288,7 +302,7 @@ export default class DateRangePicker extends React.Component {
       initialVisibleMonth,
       phrases: { jumpToPrevMonth, jumpToNextMonth, keyboardShortcuts, closeDatePicker },
     } = this.props;
-    const { dayPickerContainerStyles, isDayPickerFocused } = this.state;
+    const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
     const onOutsideClick = (!withFullScreenPortal && withPortal)
       ? this.onOutsideClick
@@ -327,6 +341,7 @@ export default class DateRangePicker extends React.Component {
           keepOpenOnDateSelect={keepOpenOnDateSelect}
           renderDay={renderDay}
           isFocused={isDayPickerFocused}
+          showKeyboardShortcuts={showKeyboardShortcuts}
           onBlur={this.onDayPickerBlur}
           phrases={{
             jumpToPrevMonth,
@@ -406,6 +421,7 @@ export default class DateRangePicker extends React.Component {
             onDatesChange={onDatesChange}
             onSelectedInputChange={this.onDateRangePickerInputFocus}
             onArrowDown={this.onDayPickerFocus}
+            onQuestionMark={this.showKeyboardShortcutsPanel}
             phrases={{ focusStartDate, clearDates }}
             screenReaderMessage={screenReaderInputMessage}
             isFocused={isDateRangePickerInputFocused}

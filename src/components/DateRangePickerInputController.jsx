@@ -42,6 +42,7 @@ const propTypes = forbidExtraProps({
   onSelectedInputChange: PropTypes.func,
   onDatesChange: PropTypes.func,
   onArrowDown: PropTypes.func,
+  onQuestionMark: PropTypes.func,
 
   customInputIcon: PropTypes.node,
   customArrowIcon: PropTypes.node,
@@ -83,6 +84,7 @@ const defaultProps = {
   onSelectedInputChange() {},
   onDatesChange() {},
   onArrowDown() {},
+  onQuestionMark() {},
 
   customInputIcon: null,
   customArrowIcon: null,
@@ -218,6 +220,7 @@ export default class DateRangePickerInputController extends React.Component {
       required,
       phrases,
       onArrowDown,
+      onQuestionMark,
       isFocused,
     } = this.props;
 
@@ -255,6 +258,7 @@ export default class DateRangePickerInputController extends React.Component {
         onClearDates={this.clearDates}
         screenReaderMessage={screenReaderMessage}
         onArrowDown={onArrowDown}
+        onQuestionMark={onQuestionMark}
         isFocused={isFocused}
       />
     );

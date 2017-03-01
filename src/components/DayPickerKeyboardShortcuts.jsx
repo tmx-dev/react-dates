@@ -22,7 +22,7 @@ const propTypes = forbidExtraProps({
     moveFocusByOneMonth: PropTypes.node,
     moveFocustoStartAndEndOfWeek: PropTypes.node,
     returnFocusToInput: PropTypes.node,
-    showKeyboardShortcuts: PropTypes.node,
+    toggleKeyboardShortcuts: PropTypes.node,
   }),
 });
 
@@ -38,14 +38,14 @@ const defaultProps = {
     pageUpPageDown: 'Page Up/Page Down',
     homeEnd: 'Home/End',
     escape: 'Escape',
-    shiftAndForwardSlash: 'Shift key + forward slash',
+    questionMark: 'Question mark',
     selectFocusedDate: 'Select the currently focused date',
     moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
     moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
     moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
     moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
     returnFocusToInput: 'Return focus to the input field',
-    showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
+    toggleKeyboardShortcuts: 'Toggle the keyboard shortcuts panel',
   },
 };
 
@@ -73,105 +73,92 @@ KeyboardShortcutRow.propTypes = {
   action: PropTypes.string.isRequired,
 };
 
-export default class DayPickerKeyboardShortcuts extends React.Component {
-  componentDidUpdate(prevProps) {
-    const { showKeyboardShortcutsPanel } = prevProps;
-    const hasPanelVisibilityChanged =
-      showKeyboardShortcutsPanel !== this.props.showKeyboardShortcutsPanel;
-    if (showKeyboardShortcutsPanel && hasPanelVisibilityChanged) {
-      this.showKeyboardShortcutsButton.focus();
-    }
-  }
+export default function DayPickerKeyboardShortcuts({
+  showKeyboardShortcutsPanel,
+  toggleKeyboardShortcutsPanel,
+  phrases,
+}) {
+  const keyboardShortcuts = [{
+    unicode: '↵',
+    label: phrases.enterKey,
+    action: phrases.selectFocusedDate,
+  },
+  {
+    unicode: '←/→',
+    label: phrases.leftArrowRightArrow,
+    action: phrases.moveFocusByOneDay,
+  },
+  {
+    unicode: '↑/↓',
+    label: phrases.upArrowDownArrow,
+    action: phrases.moveFocusByOneWeek,
+  },
+  {
+    unicode: 'PgUp/PgDn',
+    label: phrases.pageUpPageDown,
+    action: phrases.moveFocusByOneMonth,
+  },
+  {
+    unicode: 'Home/End',
+    label: phrases.homeEnd,
+    action: phrases.moveFocustoStartAndEndOfWeek,
+  },
+  {
+    unicode: 'Esc',
+    label: phrases.escape,
+    action: phrases.returnFocusToInput,
+  },
+  {
+    unicode: '?',
+    label: phrases.questionMark,
+    action: phrases.toggleKeyboardShortcuts,
+  },
+  ];
 
-  render() {
-    const {
-      showKeyboardShortcutsPanel,
-      toggleKeyboardShortcutsPanel,
-      phrases,
-    } = this.props;
+  const toggleButtonText =
+    showKeyboardShortcutsPanel
+    ? phrases.hideKeyboardShortcutsPanel
+    : phrases.showKeyboardShortcutsPanel;
 
-    const keyboardShortcuts = [{
-      unicode: '↵',
-      label: phrases.enterKey,
-      action: phrases.selectFocusedDate,
-    },
-    {
-      unicode: '←/→',
-      label: phrases.leftArrowRightArrow,
-      action: phrases.moveFocusByOneDay,
-    },
-    {
-      unicode: '↑/↓',
-      label: phrases.upArrowDownArrow,
-      action: phrases.moveFocusByOneWeek,
-    },
-    {
-      unicode: 'PgUp/PgDn',
-      label: phrases.pageUpPageDown,
-      action: phrases.moveFocusByOneMonth,
-    },
-    {
-      unicode: 'Home/End',
-      label: phrases.homeEnd,
-      action: phrases.moveFocustoStartAndEndOfWeek,
-    },
-    {
-      unicode: 'Esc',
-      label: phrases.escape,
-      action: phrases.returnFocusToInput,
-    },
-    {
-      unicode: '⇧ + /',
-      label: phrases.shiftAndForwardSlash,
-      action: phrases.showKeyboardShortcuts,
-    },
-    ];
+  return (
+    <div>
+      <button
+        ref={(ref) => { this.showKeyboardShortcutsButton = ref; }}
+        className="DayPickerKeyboardShortcuts__show"
+        type="button"
+        aria-label={toggleButtonText}
+        onClick={toggleKeyboardShortcutsPanel}
+        onMouseUp={(e) => {
+          e.currentTarget.blur();
+        }}
+      >
+        <span className="DayPickerKeyboardShortcuts__show_span">?</span>
+      </button>
 
-    const toggleButtonText =
-      showKeyboardShortcutsPanel
-      ? phrases.hideKeyboardShortcutsPanel
-      : phrases.showKeyboardShortcutsPanel;
-
-    return (
-      <div>
-        <button
-          ref={(ref) => { this.showKeyboardShortcutsButton = ref; }}
-          className="DayPickerKeyboardShortcuts__show"
-          type="button"
-          aria-label={toggleButtonText}
-          onClick={toggleKeyboardShortcutsPanel}
-          onMouseUp={(e) => {
-            e.currentTarget.blur();
-          }}
+      {showKeyboardShortcutsPanel &&
+        <div
+          className="DayPickerKeyboardShortcuts__panel"
         >
-          <span className="DayPickerKeyboardShortcuts__show_span">?</span>
-        </button>
+          <h1 className="DayPickerKeyboardShortcuts__title">Keyboard Shortcuts</h1>
 
-        {showKeyboardShortcutsPanel &&
-          <div
-            className="DayPickerKeyboardShortcuts__panel"
+          <ul className="DayPickerKeyboardShortcuts__list">
+            {keyboardShortcuts.map(({ unicode, label, action }) => (
+              <KeyboardShortcutRow key={label} unicode={unicode} label={label} action={action} />
+            ))}
+          </ul>
+
+          <button
+            className="DayPickerKeyboardShortcuts__close"
+            type="button"
+            aria-label={phrases.hideKeyboardShortcutsPanel}
+            onClick={toggleKeyboardShortcutsPanel}
           >
-            <h1 className="DayPickerKeyboardShortcuts__title">Keyboard Shortcuts</h1>
-
-            <ul className="DayPickerKeyboardShortcuts__list">
-              {keyboardShortcuts.map(({ unicode, label, action }) => (
-                <KeyboardShortcutRow key={label} unicode={unicode} label={label} action={action} />
-              ))}
-            </ul>
-
-            <button
-              className="DayPickerKeyboardShortcuts__close"
-              type="button"
-              aria-label={phrases.hideKeyboardShortcutsPanel}
-              onClick={toggleKeyboardShortcutsPanel}
-            >
-              <CloseButton />
-            </button>
-          </div>
-        }
-      </div>
-    );
-  }
+            <CloseButton />
+          </button>
+        </div>
+      }
+    </div>
+  );
 }
 
 DayPickerKeyboardShortcuts.propTypes = propTypes;

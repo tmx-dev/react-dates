@@ -27,7 +27,6 @@ const propTypes = forbidExtraProps({
 
   selectedInput: FocusedInputShape,
   onSelectedInputChange: PropTypes.func,
-  isFocused: PropTypes.bool,
 
   keepOpenOnDateSelect: PropTypes.bool,
   minimumNights: PropTypes.number,
@@ -52,6 +51,8 @@ const propTypes = forbidExtraProps({
 
   // accessibility
   onBlur: PropTypes.func,
+  isFocused: PropTypes.bool,
+  showKeyboardShortcuts: PropTypes.bool,
 
   // i18n
   monthFormat: PropTypes.string,
@@ -86,7 +87,6 @@ const defaultProps = {
 
   selectedInput: null,
   onSelectedInputChange() {},
-  isFocused: false,
 
   keepOpenOnDateSelect: false,
   minimumNights: 1,
@@ -113,6 +113,8 @@ const defaultProps = {
 
   // accessibility
   onBlur() {},
+  isFocused: false,
+  showKeyboardShortcuts: false,
 
   // i18n
   monthFormat: 'MMMM YYYY',
@@ -321,9 +323,10 @@ export default class DayPickerRangeController extends React.Component {
       initialVisibleMonth,
       selectedInput,
       renderDay,
-      isFocused,
       onBlur,
-      phrases
+      isFocused,
+      showKeyboardShortcuts,
+      phrases,
     } = this.props;
 
     const modifiers = {
@@ -371,6 +374,7 @@ export default class DayPickerRangeController extends React.Component {
         isFocused={isFocused}
         getFirstFocusableDay={this.getFirstFocusableDay}
         onBlur={onBlur}
+        showKeyboardShortcuts={showKeyboardShortcuts}
         phrases={phrases}
       />
     );

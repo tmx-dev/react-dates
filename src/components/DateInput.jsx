@@ -21,6 +21,7 @@ const propTypes = forbidExtraProps({
   onKeyDownShiftTab: PropTypes.func,
   onKeyDownTab: PropTypes.func,
   onKeyDownArrowDown: PropTypes.func,
+  onKeyDownQuestionMark: PropTypes.func,
 });
 
 const defaultProps = {
@@ -39,6 +40,7 @@ const defaultProps = {
   onKeyDownShiftTab() {},
   onKeyDownTab() {},
   onKeyDownArrowDown() {},
+  onKeyDownQuestionMark() {},
 };
 
 export default class DateInput extends React.Component {
@@ -85,16 +87,29 @@ export default class DateInput extends React.Component {
   }
 
   onKeyDown(e) {
-    const { onKeyDownShiftTab, onKeyDownTab, onKeyDownArrowDown } = this.props;
+    const {
+      onKeyDownShiftTab,
+      onKeyDownTab,
+      onKeyDownArrowDown,
+      onKeyDownQuestionMark,
+    } = this.props;
 
-    if (e.key === 'Tab') {
-      if (e.shiftKey) {
-        onKeyDownShiftTab(e);
-      } else {
-        onKeyDownTab(e);
-      }
-    } else if (e.key === 'ArrowDown') {
-      onKeyDownArrowDown(e);
+    switch (e.key) {
+      case 'Tab':
+        if (e.shiftKey) {
+          onKeyDownShiftTab(e);
+        } else {
+          onKeyDownTab(e);
+        }
+        break;
+      case 'ArrowDown':
+        onKeyDownArrowDown(e);
+        break;
+      case '?':
+        onKeyDownQuestionMark(e);
+        break;
+      default:
+        // do nothing
     }
   }
 
@@ -144,14 +159,14 @@ export default class DateInput extends React.Component {
           disabled={disabled}
           readOnly={isTouch}
           required={required}
-          aria-describedby={screenReaderMessage && screenReaderMessageId}
+          aria-describedby={screenReaderMessageId}
         />
 
-        {screenReaderMessage &&
-          <p id={screenReaderMessageId} className="screen-reader-only">
-            {screenReaderMessage}
-          </p>
-        }
+        <p id={screenReaderMessageId} className="screen-reader-only">
+          Press the down arrow to select a date using the calendar interface. <br />
+          Press the shift key and forward slash together to see a list of all keyboard shortcuts. <br />
+          {screenReaderMessage}
+        </p>
 
         <div
           className={cx('DateInput__display-text', {
