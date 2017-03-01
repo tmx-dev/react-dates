@@ -8,6 +8,7 @@ import cx from 'classnames';
 import OutsideClickHandler from './OutsideClickHandler';
 import CalendarMonthGrid from './CalendarMonthGrid';
 import DayPickerNavigation from './DayPickerNavigation';
+import DayPickerKeyboardShortcuts from './DayPickerKeyboardShortcuts';
 
 import getTransformStyles from '../utils/getTransformStyles';
 
@@ -58,6 +59,24 @@ const propTypes = forbidExtraProps({
   phrases: PropTypes.shape({
     jumpToPrevMonth: PropTypes.node,
     jumpToNextMonth: PropTypes.node,
+    keyboardShortcuts: PropTypes.shape({
+      showKeyboardShortcutsPanel: PropTypes.node,
+      hideKeyboardShortcutsPanel: PropTypes.node,
+      enterKey: PropTypes.node,
+      leftArrowRightArrow: PropTypes.node,
+      upArrowDownArrow: PropTypes.node,
+      pageUpPageDown: PropTypes.node,
+      homeEnd: PropTypes.node,
+      escape: PropTypes.node,
+      questionMark: PropTypes.node,
+      selectFocusedDate: PropTypes.node,
+      moveFocusByOneDay: PropTypes.node,
+      moveFocusByOneWeek: PropTypes.node,
+      moveFocusByOneMonth: PropTypes.node,
+      moveFocustoStartAndEndOfWeek: PropTypes.node,
+      returnFocusToInput: PropTypes.node,
+      showKeyboardShortcuts: PropTypes.node,
+    }),
   }),
 });
 
@@ -94,6 +113,24 @@ const defaultProps = {
   phrases: {
     jumpToPrevMonth: 'Jump to previous month',
     jumpToNextMonth: 'Jump to next month',
+    keyboardShortcuts: {
+      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
+      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
+      enterKey: 'Enter key',
+      leftArrowRightArrow: 'Left Arrow/Right Arrow',
+      upArrowDownArrow: 'Up Arrow/Down Arrow',
+      pageUpPageDown: 'Page Up/Page Down',
+      homeEnd: 'Home/End',
+      escape: 'Escape',
+      shiftAndForwardSlash: 'Shift key + forward slash',
+      selectFocusedDate: 'Select the currently focused date',
+      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
+      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
+      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
+      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
+      returnFocusToInput: 'Return focus to the input field',
+      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
+    },
   },
 };
 
@@ -165,6 +202,7 @@ export default class DayPicker extends React.Component {
       scrollableMonthMultiple: 1,
       focusedDate: null,
       nextFocusedDate: null,
+      showKeyboardShortcuts: false,
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -172,6 +210,7 @@ export default class DayPicker extends React.Component {
     this.onNextMonthClick = this.onNextMonthClick.bind(this);
     this.multiplyScrollableMonths = this.multiplyScrollableMonths.bind(this);
     this.updateStateAfterMonthTransition = this.updateStateAfterMonthTransition.bind(this);
+    this.toggleKeyboardShortcuts = this.toggleKeyboardShortcuts.bind(this);
   }
 
   componentDidMount() {
@@ -236,6 +275,7 @@ export default class DayPicker extends React.Component {
     let didTransitionMonth = false;
 
     const key = e.which || e.charCode || e.keyCode;
+
     switch (key) {
       case 38: // Up Arrow
         newFocusedDate.subtract(1, 'week');
@@ -269,6 +309,10 @@ export default class DayPicker extends React.Component {
       case 34: // Page Down
         newFocusedDate.add(1, 'month');
         didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+        break;
+
+      case 191:
+        if (e.shiftKey) this.toggleKeyboardShortcuts();
         break;
 
       case 27: // Escape
@@ -476,6 +520,12 @@ export default class DayPicker extends React.Component {
     );
   }
 
+  toggleKeyboardShortcuts() {
+    this.setState({
+      showKeyboardShortcuts: !this.state.showKeyboardShortcuts,
+    });
+  }
+
   renderNavigation() {
     const {
       navPrev,
@@ -539,6 +589,7 @@ export default class DayPicker extends React.Component {
       translationValue,
       scrollableMonthMultiple,
       focusedDate,
+      showKeyboardShortcuts,
     } = this.state;
 
     const {
@@ -605,6 +656,8 @@ export default class DayPicker extends React.Component {
     const transformType = this.isVertical() ? 'translateY' : 'translateX';
     const transformValue = `${transformType}(${translationValue}px)`;
 
+    const shouldFocusDate = !isCalendarMonthGridAnimating && !showKeyboardShortcuts;
+
     return (
       <div className={dayPickerClassNames} style={dayPickerStyle}>
         <OutsideClickHandler onOutsideClick={onOutsideClick}>
@@ -644,11 +697,16 @@ export default class DayPicker extends React.Component {
                 renderDay={renderDay}
                 onMonthTransitionEnd={this.updateStateAfterMonthTransition}
                 monthFormat={monthFormat}
-                focusedDate={!isCalendarMonthGridAnimating ? focusedDate : null}
+                focusedDate={shouldFocusDate ? focusedDate : null}
               />
 
               {verticalScrollable && this.renderNavigation()}
             </div>
+
+            <DayPickerKeyboardShortcuts
+              showKeyboardShortcutsPanel={showKeyboardShortcuts}
+              toggleKeyboardShortcutsPanel={this.toggleKeyboardShortcuts}
+            />
           </div>
         </OutsideClickHandler>
       </div>

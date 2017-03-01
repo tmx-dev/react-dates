@@ -51,6 +51,7 @@ const propTypes = forbidExtraProps({
 
   // i18n
   phrases: PropTypes.shape({
+    focusStartDate: PropTypes.node,
     clearDates: PropTypes.node,
   }),
 });
@@ -91,6 +92,7 @@ const defaultProps = {
 
   // i18n
   phrases: {
+    focusStartDate: 'Focus on start date',
     clearDates: 'Clear Dates',
   },
 };

@@ -82,6 +82,24 @@ const defaultProps = {
     clearDates: 'Clear Dates',
     jumpToPrevMonth: 'Jump to previous month',
     jumpToNextMonth: 'Jump to next month',
+    keyboardShortcuts: {
+      showKeyboardShortcutsPanel: 'Show keyboard shortcuts panel',
+      hideKeyboardShortcutsPanel: 'Hide keyboard shortcuts panel',
+      enterKey: 'Enter key',
+      leftArrowRightArrow: 'Left Arrow/Right Arrow',
+      upArrowDownArrow: 'Up Arrow/Down Arrow',
+      pageUpPageDown: 'Page Up/Page Down',
+      homeEnd: 'Home/End',
+      escape: 'Escape',
+      shiftAndForwardSlash: 'Shift key + forward slash',
+      selectFocusedDate: 'Select the currently focused date',
+      moveFocusByOneDay: 'Decrement/Increment currently focused day by 1 day',
+      moveFocusByOneWeek: 'Decrement/Increment currently focused day by 1 week',
+      moveFocusByOneMonth: 'Decrement/Increment currently focused day by 1 month',
+      moveFocustoStartAndEndOfWeek: 'Navigate to the beginning or end of the currently focused week',
+      returnFocusToInput: 'Return focus to the input field',
+      showKeyboardShortcuts: 'Show the keyboard shortcuts panel',
+    },
   },
 };
 
@@ -268,7 +286,7 @@ export default class DateRangePicker extends React.Component {
       keepOpenOnDateSelect,
       renderDay,
       initialVisibleMonth,
-      phrases: { jumpToPrevMonth, jumpToNextMonth },
+      phrases: { jumpToPrevMonth, jumpToNextMonth, keyboardShortcuts, closeDatePicker },
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused } = this.state;
 
@@ -313,6 +331,7 @@ export default class DateRangePicker extends React.Component {
           phrases={{
             jumpToPrevMonth,
             jumpToNextMonth,
+            keyboardShortcuts,
           }}
         />
 
@@ -321,10 +340,8 @@ export default class DateRangePicker extends React.Component {
             className="DateRangePicker__close"
             type="button"
             onClick={this.onOutsideClick}
+            aria-label={closeDatePicker}
           >
-            <span className="screen-reader-only">
-              {this.props.phrases.closeDatePicker}
-            </span>
             <CloseButton />
           </button>
         }
@@ -348,7 +365,7 @@ export default class DateRangePicker extends React.Component {
       customArrowIcon,
       disabled,
       required,
-      phrases,
+      phrases: { focusStartDate, clearDates },
       isOutsideRange,
       withPortal,
       withFullScreenPortal,
@@ -389,7 +406,7 @@ export default class DateRangePicker extends React.Component {
             onDatesChange={onDatesChange}
             onSelectedInputChange={this.onDateRangePickerInputFocus}
             onArrowDown={this.onDayPickerFocus}
-            phrases={phrases}
+            phrases={{ focusStartDate, clearDates }}
             screenReaderMessage={screenReaderInputMessage}
             isFocused={isDateRangePickerInputFocused}
           />
