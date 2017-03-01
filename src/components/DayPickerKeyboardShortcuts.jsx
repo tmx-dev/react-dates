@@ -107,8 +107,15 @@ export default function DayPickerKeyboardShortcuts({
       {showKeyboardShortcutsPanel &&
         <div
           className="DayPickerKeyboardShortcuts__panel"
+          role="dialog"
+          aria-labelledby="DayPickerKeyboardShortcuts__title"
         >
-          <h1 className="DayPickerKeyboardShortcuts__title">{phrases.keyboardShortcuts}</h1>
+          <div
+            id="DayPickerKeyboardShortcuts__title"
+            className="DayPickerKeyboardShortcuts__title"
+          >
+            {phrases.keyboardShortcuts}
+          </div>
 
           <ul className="DayPickerKeyboardShortcuts__list">
             {keyboardShortcuts.map(({ unicode, label, action }) => (
