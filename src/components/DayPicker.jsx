@@ -14,6 +14,7 @@ import DayPickerNavigation from './DayPickerNavigation';
 import DayPickerKeyboardShortcuts from './DayPickerKeyboardShortcuts';
 
 import getTransformStyles from '../utils/getTransformStyles';
+import isTouchDevice from '../utils/isTouchDevice';
 
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 
@@ -166,6 +167,7 @@ export default class DayPicker extends React.Component {
       focusedDate: null,
       nextFocusedDate: null,
       showKeyboardShortcuts: props.showKeyboardShortcuts,
+      isTouchDevice: false,
     };
 
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -177,6 +179,8 @@ export default class DayPicker extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ isTouchDevice: isTouchDevice() });
+
     if (this.isHorizontal()) {
       this.adjustDayPickerHeight();
       this.initializeDayPickerWidth();
@@ -559,6 +563,7 @@ export default class DayPicker extends React.Component {
       scrollableMonthMultiple,
       focusedDate,
       showKeyboardShortcuts,
+      isTouchDevice,
     } = this.state;
 
     const {
@@ -675,11 +680,13 @@ export default class DayPicker extends React.Component {
               {verticalScrollable && this.renderNavigation()}
             </div>
 
-            <DayPickerKeyboardShortcuts
-              showKeyboardShortcutsPanel={showKeyboardShortcuts}
-              toggleKeyboardShortcutsPanel={this.toggleKeyboardShortcuts}
-              phrases={phrases}
-            />
+            {!isTouchDevice &&
+              <DayPickerKeyboardShortcuts
+                showKeyboardShortcutsPanel={showKeyboardShortcuts}
+                toggleKeyboardShortcutsPanel={this.toggleKeyboardShortcuts}
+                phrases={phrases}
+              />
+            }
           </div>
         </OutsideClickHandler>
       </div>
