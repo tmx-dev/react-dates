@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import moment from 'moment';
 import cx from 'classnames';
 import Portal from 'react-portal';
@@ -297,7 +298,7 @@ export default class SingleDatePicker extends React.Component {
       date,
       initialVisibleMonth,
     } = this.props;
-    const { dayPickerContainerStyles } = this.state;
+    const { dayPickerContainerStyles, positon } = this.state;
 
     const modifiers = {
       today: day => this.isToday(day),
@@ -312,6 +313,10 @@ export default class SingleDatePicker extends React.Component {
 
     const onOutsideClick = (!withFullScreenPortal && withPortal) ? this.onClearFocus : undefined;
     const initialVisibleMonthThunk = initialVisibleMonth || (() => (date || moment()));
+    let rect = {};
+    if (this.datePicker) {
+      rect = this.datePicker.getBoundingClientRect();
+    }
 
     return (
       <div
@@ -337,6 +342,7 @@ export default class SingleDatePicker extends React.Component {
           navPrev={navPrev}
           navNext={navNext}
           renderDay={renderDay}
+          parentRect={rect}
         />
 
         {withFullScreenPortal &&
@@ -374,9 +380,8 @@ export default class SingleDatePicker extends React.Component {
     const inputValue = toISODateString(date);
 
     const onOutsideClick = (!withPortal && !withFullScreenPortal) ? this.onClearFocus : undefined;
-
     return (
-      <div className="SingleDatePicker">
+      <div className="SingleDatePicker" ref={(ref) => { this.datePicker = ref; }}>
         <OutsideClickHandler onOutsideClick={onOutsideClick}>
           <SingleDatePickerInput
             id={id}

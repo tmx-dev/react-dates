@@ -91,7 +91,6 @@ export default class DateRangePicker extends React.Component {
     };
 
     this.onOutsideClick = this.onOutsideClick.bind(this);
-
     this.responsivizePickerPosition = this.responsivizePickerPosition.bind(this);
   }
 
@@ -169,7 +168,6 @@ export default class DateRangePicker extends React.Component {
       const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
       const containerEdge =
         isAnchoredLeft ? containerRect[ANCHOR_RIGHT] : containerRect[ANCHOR_LEFT];
-
       this.setState({
         dayPickerContainerStyles: getResponsiveContainerStyles(
           anchorDirection,
@@ -232,6 +230,11 @@ export default class DateRangePicker extends React.Component {
     const initialVisibleMonthThunk =
       initialVisibleMonth || (() => (startDate || endDate || moment()));
 
+    let rect = {};
+    if (this.datePicker) {
+      rect = this.datePicker.getBoundingClientRect();
+    }
+
     return (
       <div
         ref={(ref) => { this.dayPickerContainer = ref; }}
@@ -262,6 +265,7 @@ export default class DateRangePicker extends React.Component {
           isDayBlocked={isDayBlocked}
           keepOpenOnDateSelect={keepOpenOnDateSelect}
           renderDay={renderDay}
+          parentRect={rect}
         />
 
         {withFullScreenPortal &&
@@ -310,7 +314,7 @@ export default class DateRangePicker extends React.Component {
     const onOutsideClick = (!withPortal && !withFullScreenPortal) ? this.onOutsideClick : undefined;
 
     return (
-      <div className="DateRangePicker">
+      <div className="DateRangePicker" ref={(ref) => { this.datePicker = ref; }}>
         <OutsideClickHandler onOutsideClick={onOutsideClick}>
           <DateRangePickerInputController
             startDate={startDate}

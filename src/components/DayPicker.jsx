@@ -10,7 +10,7 @@ import CalendarMonthGrid from './CalendarMonthGrid';
 import DayPickerNavigation from './DayPickerNavigation';
 
 import getTransformStyles from '../utils/getTransformStyles';
-
+import getDayPickerPosition from '../utils/getDayPickerPosition';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 
 import {
@@ -34,6 +34,7 @@ const propTypes = forbidExtraProps({
   onOutsideClick: PropTypes.func,
   hidden: PropTypes.bool,
   initialVisibleMonth: PropTypes.func,
+  parentRect: PropTypes.object,
 
   // navigation props
   navPrev: PropTypes.node,
@@ -384,6 +385,7 @@ export default class DayPicker extends React.Component {
       renderDay,
       onOutsideClick,
       monthFormat,
+      parentRect = {},
     } = this.props;
 
     const numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
@@ -418,13 +420,14 @@ export default class DayPicker extends React.Component {
     // this is a kind of made-up value that generally looks good. we'll
     // probably want to let the user set this explicitly.
     const verticalHeight = 1.75 * CALENDAR_MONTH_WIDTH;
+    const { left, top } = getDayPickerPosition(parentRect, horizontalWidth);
 
     const dayPickerStyle = {
       width: this.isHorizontal() && horizontalWidth,
 
-      // These values are to center the datepicker (approximately) on the page
-      marginLeft: this.isHorizontal() && withPortal && -horizontalWidth / 2,
-      marginTop: this.isHorizontal() && withPortal && -CALENDAR_MONTH_WIDTH / 2,
+      // These values are to position the datepicker on the screen
+      marginLeft: this.isHorizontal() && withPortal ? left : 0,
+      marginTop: this.isHorizontal() && withPortal ? top : 0,
     };
 
     const transitionContainerStyle = {
@@ -437,7 +440,7 @@ export default class DayPicker extends React.Component {
     const transformValue = `${transformType}(${translationValue}px)`;
 
     return (
-      <div className={dayPickerClassNames} style={dayPickerStyle} >
+      <div className={dayPickerClassNames} style={dayPickerStyle}>
         <OutsideClickHandler onOutsideClick={onOutsideClick}>
           {!verticalScrollable && this.renderNavigation()}
 
