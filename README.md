@@ -10,6 +10,10 @@
 
 > An easily internationalizable, mobile-friendly datepicker library for the web.
 
+This is a fork of airbnb react-dates calendar, with one diffrent behavior compared to origin.
+
+***withPortal*** option will render calendar directly in document body, with absolute positioning just below the dates input. This was done because zIndex problems occured when using combination of absoulte and fixed positiong for the calendar.
+
 ![react-dates in action](https://raw.githubusercontent.com/airbnb/react-dates/master/react-dates-demo.gif)
 
 ## Live Playground
