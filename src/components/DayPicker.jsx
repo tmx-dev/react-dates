@@ -452,6 +452,7 @@ export default class DayPicker extends React.Component {
             className={transitionContainerClasses}
             ref={(ref) => { this.transitionContainer = ref; }}
             style={transitionContainerStyle}
+            onClick={(e) => { e.stopPropagation(); }}
           >
             <CalendarMonthGrid
               ref={(ref) => { this.calendarMonthGrid = ref; }}

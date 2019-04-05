@@ -240,6 +240,7 @@ export default class DateRangePicker extends React.Component {
         ref={(ref) => { this.dayPickerContainer = ref; }}
         className={this.getDayPickerContainerClasses()}
         style={dayPickerContainerStyles}
+        onClick={onOutsideClick}
       >
         <DayPickerRangeController
           ref={(ref) => { this.dayPicker = ref; }}
@@ -256,7 +257,6 @@ export default class DateRangePicker extends React.Component {
           monthFormat={monthFormat}
           withPortal={withPortal || withFullScreenPortal}
           initialVisibleMonth={initialVisibleMonthThunk}
-          onOutsideClick={onOutsideClick}
           navPrev={navPrev}
           navNext={navNext}
           minimumNights={minimumNights}
