@@ -69,7 +69,10 @@ export default function DayPickerNavigation(props) {
   });
 
   return (
-    <div className={navClassNames}>
+    <div
+        className={navClassNames}
+        onClick={(e) => { e.stopPropagation(); }}
+    >
       {!isVerticalScrollable &&
         <span
           className={prevClassNames}
